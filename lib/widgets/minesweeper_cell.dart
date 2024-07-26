@@ -55,7 +55,7 @@ class _MinesweeperCellState extends State<MinesweeperCell> {
             child: AnimatedContainer(
               height: isHidden ? 100 : 0,
               width: isHidden ? 100 : 0,
-              duration: Duration(milliseconds: 300),
+              duration: const Duration(milliseconds: 300),
               alignment: Alignment.center,
               color: Colors.blue,
             ),
