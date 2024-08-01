@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:minesweeper/pages/game_screen.dart';
-import 'package:minesweeper/utils/context_extensions.dart';
-import 'package:minesweeper/widgets/responsive/create_route.dart';
+// Pages
+import '/pages/game_screen.dart';
+// Widgets
+import '/widgets/responsive/create_route.dart';
+// Utils
+import '/utils/context_extensions.dart';
 
 class Home extends ConsumerStatefulWidget {
   const Home({super.key});

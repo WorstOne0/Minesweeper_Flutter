@@ -29,11 +29,12 @@ void main() async {
   final container = ProviderContainer(observers: []);
   // Dark Mode
   bool isDark = await container.read(secureStorageProvider).readString("dark_mode") == "true";
+  isDark = true;
 
   runApp(
     UncontrolledProviderScope(
       container: container,
-      child: MyApp(isDark: true),
+      child: MyApp(isDark: isDark),
     ),
   );
 }

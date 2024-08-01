@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic_plus/flutter_neumorphic.dart';
-// Utils
-import '/utils/context_extensions.dart';
 
 class NeumorphismContainer extends StatefulWidget {
   const NeumorphismContainer({required this.isPressed, required this.child, super.key});

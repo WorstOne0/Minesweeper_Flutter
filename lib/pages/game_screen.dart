@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:flutter_neumorphic_plus/flutter_neumorphic.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:minesweeper/controllers/game_state_controller.dart';
-import 'package:minesweeper/models/board.dart';
-import 'package:minesweeper/models/cell.dart';
-import 'package:minesweeper/widgets/minesweeper_cell.dart';
-import 'package:minesweeper/widgets/neumorphism_container.dart';
+// Controllers
+import '/controllers/game_state_controller.dart';
+// Models
+import '/models/board.dart';
+import '/models/cell.dart';
+// Widgets
+import '/widgets/minesweeper_cell.dart';
 
 // In the classic Minesweeper game, key elements include mines, numbers indicating how many mines are adjacent, and the grid itself. Here are some programming-related alternatives for these elements:
 

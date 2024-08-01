@@ -4,11 +4,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:minesweeper/utils/context_extensions.dart';
 // Pages
 import '/pages/home.dart';
 // Widgets
 import '/widgets/responsive/create_route.dart';
+// Utils
+import '/utils/context_extensions.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
