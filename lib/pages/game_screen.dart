@@ -42,18 +42,14 @@ class _GameScreenState extends ConsumerState<GameScreen> {
 
   late TransformationController transformationController;
   //
-  // int rows = 34, columns = 20;
   int rows = 16, columns = 10;
-
-  bool isPressed = false;
+  bool firstClick = false;
 
   @override
   void initState() {
     super.initState();
 
     transformationController = TransformationController();
-    // final scaleMatrix = Matrix4.identity()..scale(0.3);
-    // transformationController = TransformationController(scaleMatrix);
 
     createNewGame();
   }
@@ -62,14 +58,38 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     await Future.delayed(const Duration(milliseconds: 50));
     ref.read(gameProvider.notifier).createNewGame(rows, columns, 20);
 
+    alignGameBoard();
+
     setState(() => isLoading = false);
   }
 
-  double getColumnsSize(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
+  void alignGameBoard() {
+    Matrix4 matrix = Matrix4.identity();
 
-    // return width / columns;
-    return 40;
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+
+    double paddedWidth = width - 100;
+    double paddedHeight = height - kToolbarHeight - 100;
+    double columnsSize = columns * 40;
+
+    if (columnsSize > paddedWidth) {
+      matrix.scale(paddedWidth / columnsSize);
+      matrix.translate(60.0, paddedHeight / 4);
+    }
+
+    transformationController.value = matrix;
+  }
+
+  void focusOnPoint(int row, int column) {
+    Matrix4 matrix = transformationController.value;
+
+    matrix.scale(1.1);
+    matrix.translate(-(column - 1) * 40.0, -(row - 1) * 40.0);
+
+    transformationController.value = matrix;
+
+    setState(() {});
   }
 
   List<Widget> buildGameBoard() {
@@ -92,7 +112,15 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     Cell cell = ref.read(gameProvider.notifier).getCell(row, column);
 
     return GestureDetector(
-      onTap: () => ref.read(gameProvider.notifier).handleClick(row, column),
+      onTap: () {
+        if (!firstClick) {
+          // focusOnPoint(row, column);
+
+          setState(() => firstClick = true);
+        }
+
+        ref.read(gameProvider.notifier).handleClick(row, column);
+      },
       onLongPress: () => ref.read(gameProvider.notifier).setFlag(row, column),
       child: MinesweeperCell(cell: cell),
     );
@@ -101,9 +129,6 @@ class _GameScreenState extends ConsumerState<GameScreen> {
   @override
   Widget build(BuildContext context) {
     ref.watch(gameProvider);
-
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
 
     Board? board = ref.watch(gameProvider).board;
 
@@ -114,43 +139,35 @@ class _GameScreenState extends ConsumerState<GameScreen> {
         child: Column(
           children: [
             if (!isLoading) Text((board?.isGameLose ?? false) ? "Perdeu Otario" : "TO jogando"),
-            // Padding(
-            //   padding: const EdgeInsets.all(30),
-            //   child: GestureDetector(
-            //     onTap: () => setState(() => isPressed = !isPressed),
-            //     child: NeumorphicTheme(
-            //       themeMode: ThemeMode.light,
-            //       theme: NeumorphicThemeData(
-            //         baseColor: Colors.green,
-            //         lightSource: LightSource.topLeft,
-            //       ),
-            //       child: NeumorphismContainer(isPressed: isPressed),
-            //     ),
-            //   ),
-            // ),
             isLoading
                 ? const CircularProgressIndicator()
                 : Expanded(
-                    child: InteractiveViewer(
-                      maxScale: 5,
-                      minScale: 0.2,
-                      boundaryMargin: EdgeInsets.symmetric(
-                        vertical: height * 1.5,
-                        horizontal: width * 1.5,
-                      ),
-                      transformationController: transformationController,
-                      constrained: false,
-                      child: Container(
-                        color: Colors.black,
-                        child: LayoutGrid(
-                          columnSizes:
-                              List.generate(columns, (index) => getColumnsSize(context).px),
-                          rowSizes: List.generate(rows, (index) => getColumnsSize(context).px),
-                          columnGap: -0.2,
-                          rowGap: -0.2,
-                          children: buildGameBoard(),
-                        ),
-                      ),
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        double width = constraints.maxHeight;
+                        double height = constraints.maxHeight;
+
+                        return InteractiveViewer(
+                          maxScale: 4,
+                          minScale: 0.4,
+                          boundaryMargin: EdgeInsets.symmetric(
+                            vertical: height * 0.5,
+                            horizontal: width * 0.5,
+                          ),
+                          transformationController: transformationController,
+                          constrained: false,
+                          child: Container(
+                            color: Colors.black,
+                            child: LayoutGrid(
+                              columnSizes: List.generate(columns, (index) => 40.px),
+                              rowSizes: List.generate(rows, (index) => 40.px),
+                              columnGap: -0.2,
+                              rowGap: -0.2,
+                              children: buildGameBoard(),
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
           ],

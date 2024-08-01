@@ -3,6 +3,8 @@
 // Flutter packages
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:minesweeper/utils/context_extensions.dart';
 // Pages
 import '/pages/home.dart';
 // Widgets
@@ -33,14 +35,33 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Colors.amber,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: Image.asset("assets/images/splash_screen_background.png").image,
+            fit: BoxFit.cover,
+          ),
+        ),
         child: Container(
           alignment: Alignment.center,
           padding: const EdgeInsets.all(15),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [Text("LOL")],
+          child: Hero(
+            tag: "logo",
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.bug_report,
+                  size: 140,
+                  color: context.colorScheme.primary,
+                ),
+                const SizedBox(height: 5),
+                Text(
+                  "</> CodeSweeper",
+                  style: TextStyle(fontFamily: GoogleFonts.firaCode().fontFamily, fontSize: 26),
+                )
+              ],
+            ),
           ),
         ),
       ),

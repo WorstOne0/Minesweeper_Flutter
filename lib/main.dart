@@ -1,14 +1,19 @@
+// Flutter Packages
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:minesweeper/pages/splash_screen.dart';
-import 'package:minesweeper/services/navigator_provider.dart';
-import 'package:minesweeper/services/storage/secure_storage.dart';
-import 'package:minesweeper/styles/style_config.dart';
-import 'package:minesweeper/widgets/responsive/reponsive_widget.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+// Pages
+import '/pages/splash_screen.dart';
+// Services
+import '/services/navigator_provider.dart';
+import '/services/storage/secure_storage.dart';
+// Styles
+import '/styles/style_config.dart';
+// Widgets
+import '/widgets/responsive/reponsive_widget.dart';
 
 void main() async {
   // Flutter initialization

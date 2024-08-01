@@ -1,9 +1,11 @@
 // Flutter Packages
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:minesweeper/models/board.dart';
-import 'package:minesweeper/models/cell.dart';
-import 'package:minesweeper/services/storage/secure_storage.dart';
+// Models
+import '/models/board.dart';
+import '/models/cell.dart';
+// Services
+import '/services/storage/secure_storage.dart';
 
 @immutable
 class GameStateState {
