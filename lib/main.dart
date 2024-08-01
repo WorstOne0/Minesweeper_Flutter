@@ -28,7 +28,7 @@ void main() async {
   runApp(
     UncontrolledProviderScope(
       container: container,
-      child: MyApp(isDark: isDark),
+      child: MyApp(isDark: true),
     ),
   );
 }

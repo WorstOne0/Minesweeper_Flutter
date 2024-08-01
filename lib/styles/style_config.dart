@@ -1,4 +1,4 @@
-// Flutter Packages
+// Flutter
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:material_color_utilities/material_color_utilities.dart';
@@ -17,71 +17,105 @@ TonalPalette primaryTonalP = toTonalPalette(const Color(0xFF385B3E).value);
 // Generated Primary - 0xFF106D34
 ColorScheme lightColorScheme = const ColorScheme(
   brightness: Brightness.light,
-  primary: Color(0xFF385B3E),
-  onPrimary: Color(0xFFFFFFFF),
-  primaryContainer: Color(0xFF9FF6AE),
-  onPrimaryContainer: Color(0xFF00210A),
-  secondary: Color(0xFF506351),
-  onSecondary: Color(0xFFFFFFFF),
-  secondaryContainer: Color(0xFFD3E8D2),
-  onSecondaryContainer: Color(0xFF0E1F12),
-  tertiary: Color(0xFF39656D),
-  onTertiary: Color(0xFFFFFFFF),
-  tertiaryContainer: Color(0xFFBDEAF4),
-  onTertiaryContainer: Color(0xFF001F25),
-  error: Color(0xFFBA1A1A),
-  errorContainer: Color(0xFFFFDAD6),
-  onError: Color(0xFFFFFFFF),
-  onErrorContainer: Color(0xFF410002),
-  surface: Color(0xFFFAFAFA),
-  onSurface: Color(0xFF1A1C19),
-  onSurfaceVariant: Color(0xFF414941),
-  outline: Color(0xFF727970),
-  onInverseSurface: Color(0xFFF0F1EC),
-  inverseSurface: Color(0xFF2E312E),
-  inversePrimary: Color(0xFF84D994),
-  shadow: Color(0xFF000000),
-  surfaceTint: Colors.transparent,
-  outlineVariant: Color(0xFFC1C9BE),
-  scrim: Color(0xFF000000),
+  primary: Color(0xff30628c),
+  surfaceTint: Color(0xff30628c),
+  onPrimary: Color(0xffffffff),
+  primaryContainer: Color(0xffcfe5ff),
+  onPrimaryContainer: Color(0xff001d33),
+  secondary: Color(0xff52606f),
+  onSecondary: Color(0xffffffff),
+  secondaryContainer: Color(0xffd5e4f7),
+  onSecondaryContainer: Color(0xff0e1d2a),
+  tertiary: Color(0xff6e528a),
+  onTertiary: Color(0xffffffff),
+  tertiaryContainer: Color(0xfff0dbff),
+  onTertiaryContainer: Color(0xff280d42),
+  error: Color(0xffba1a1a),
+  onError: Color(0xffffffff),
+  errorContainer: Color(0xffffdad6),
+  onErrorContainer: Color(0xff410002),
+  surface: Color(0xfff7f9ff),
+  onSurface: Color(0xff181c20),
+  onSurfaceVariant: Color(0xff42474e),
+  outline: Color(0xff72777f),
+  outlineVariant: Color(0xffc2c7cf),
+  shadow: Color(0xff000000),
+  scrim: Color(0xff000000),
+  inverseSurface: Color(0xff2d3135),
+  inversePrimary: Color(0xff9ccbfb),
+  primaryFixed: Color(0xffcfe5ff),
+  onPrimaryFixed: Color(0xff001d33),
+  primaryFixedDim: Color(0xff9ccbfb),
+  onPrimaryFixedVariant: Color(0xff104a73),
+  secondaryFixed: Color(0xffd5e4f7),
+  onSecondaryFixed: Color(0xff0e1d2a),
+  secondaryFixedDim: Color(0xffb9c8da),
+  onSecondaryFixedVariant: Color(0xff3a4857),
+  tertiaryFixed: Color(0xfff0dbff),
+  onTertiaryFixed: Color(0xff280d42),
+  tertiaryFixedDim: Color(0xffdab9f9),
+  onTertiaryFixedVariant: Color(0xff553b71),
+  surfaceDim: Color(0xffd8dae0),
+  surfaceBright: Color(0xfff7f9ff),
+  surfaceContainerLowest: Color(0xffffffff),
+  surfaceContainerLow: Color(0xfff1f3f9),
+  surfaceContainer: Color(0xffeceef4),
+  surfaceContainerHigh: Color(0xffe6e8ee),
+  surfaceContainerHighest: Color(0xffe0e2e8),
 );
 
 // Generated Primary - 0xFF84D994
-ColorScheme darkColorScheme = ColorScheme(
+ColorScheme darkColorScheme = const ColorScheme(
   brightness: Brightness.dark,
-  primary: Color(primaryTonalP.get(40)),
-  onPrimary: const Color(0xFF003917),
-  primaryContainer: const Color(0xFF005224),
-  onPrimaryContainer: const Color(0xFF9FF6AE),
-  secondary: const Color(0xFFB7CCB6),
-  onSecondary: const Color(0xFF233425),
-  secondaryContainer: const Color(0xFF394B3B),
-  onSecondaryContainer: const Color(0xFFD3E8D2),
-  tertiary: const Color(0xFFA1CED8),
-  onTertiary: const Color(0xFF00363E),
-  tertiaryContainer: const Color(0xFF204D55),
-  onTertiaryContainer: const Color(0xFFBDEAF4),
-  error: const Color(0xFF93000A),
-  errorContainer: const Color(0xFF93000A),
-  onError: const Color(0xFF690005),
-  onErrorContainer: const Color(0xFFFFDAD6),
-  surface: const Color(0xFF1A1C19),
-  onSurface: const Color(0xFFE2E3DE),
-  onSurfaceVariant: const Color(0xFFC1C9BE),
-  outline: const Color(0xFF8B9389),
-  onInverseSurface: const Color(0xFF1A1C19),
-  inverseSurface: const Color(0xFFE2E3DE),
-  inversePrimary: const Color(0xFF106D34),
-  shadow: const Color(0xFF000000),
-  surfaceTint: const Color(0xFF84D994),
-  outlineVariant: const Color(0xFF414941),
-  scrim: const Color(0xFF000000),
+  primary: Color(0xff9ccbfb),
+  surfaceTint: Color(0xff9ccbfb),
+  onPrimary: Color(0xff003354),
+  primaryContainer: Color(0xff104a73),
+  onPrimaryContainer: Color(0xffcfe5ff),
+  secondary: Color(0xffb9c8da),
+  onSecondary: Color(0xff243240),
+  secondaryContainer: Color(0xff3a4857),
+  onSecondaryContainer: Color(0xffd5e4f7),
+  tertiary: Color(0xffdab9f9),
+  onTertiary: Color(0xff3e2459),
+  tertiaryContainer: Color(0xff553b71),
+  onTertiaryContainer: Color(0xfff0dbff),
+  error: Color(0xffffb4ab),
+  onError: Color(0xff690005),
+  errorContainer: Color(0xff93000a),
+  onErrorContainer: Color(0xffffdad6),
+  surface: Color(0xff101418),
+  onSurface: Color(0xffe0e2e8),
+  onSurfaceVariant: Color(0xffc2c7cf),
+  outline: Color(0xff8c9199),
+  outlineVariant: Color(0xff42474e),
+  shadow: Color(0xff000000),
+  scrim: Color(0xff000000),
+  inverseSurface: Color(0xffe0e2e8),
+  inversePrimary: Color(0xff30628c),
+  primaryFixed: Color(0xffcfe5ff),
+  onPrimaryFixed: Color(0xff001d33),
+  primaryFixedDim: Color(0xff9ccbfb),
+  onPrimaryFixedVariant: Color(0xff104a73),
+  secondaryFixed: Color(0xffd5e4f7),
+  onSecondaryFixed: Color(0xff0e1d2a),
+  secondaryFixedDim: Color(0xffb9c8da),
+  onSecondaryFixedVariant: Color(0xff3a4857),
+  tertiaryFixed: Color(0xfff0dbff),
+  onTertiaryFixed: Color(0xff280d42),
+  tertiaryFixedDim: Color(0xffdab9f9),
+  onTertiaryFixedVariant: Color(0xff553b71),
+  surfaceDim: Color(0xff101418),
+  surfaceBright: Color(0xff36393e),
+  surfaceContainerLowest: Color(0xff0b0e12),
+  surfaceContainerLow: Color(0xff181c20),
+  surfaceContainer: Color(0xff1c2024),
+  surfaceContainerHigh: Color(0xff272a2f),
+  surfaceContainerHighest: Color(0xff323539),
 );
 
 // Default Design
-ShapeBorder get shapeMedium => RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(8),
-    );
+ShapeBorder get shapeMedium => RoundedRectangleBorder(borderRadius: BorderRadius.circular(8));
 
 // Themes
 CardTheme cardTheme(bool isDark) {
@@ -114,20 +148,14 @@ TabBarTheme tabBarTheme(ColorScheme colors) {
     unselectedLabelColor: colors.onSurfaceVariant,
     indicator: BoxDecoration(
       border: Border(
-        bottom: BorderSide(
-          color: colors.secondary,
-          width: 2,
-        ),
+        bottom: BorderSide(color: colors.secondary, width: 2),
       ),
     ),
   );
 }
 
 BottomAppBarTheme bottomAppBarTheme(ColorScheme colors) {
-  return BottomAppBarTheme(
-    color: colors.surface,
-    elevation: 0,
-  );
+  return BottomAppBarTheme(color: colors.surface, elevation: 0);
 }
 
 BottomNavigationBarThemeData bottomNavigationBarTheme(ColorScheme colors) {
@@ -155,10 +183,7 @@ DialogTheme dialogTheme(ColorScheme colors) {
 }
 
 ButtonThemeData buttonThemeData() {
-  return const ButtonThemeData(
-    height: 48,
-    textTheme: ButtonTextTheme.accent,
-  );
+  return const ButtonThemeData(height: 48);
 }
 
 BottomSheetThemeData bottomSheetThemeData(ColorScheme colors) {
@@ -170,8 +195,8 @@ BottomSheetThemeData bottomSheetThemeData(ColorScheme colors) {
 
 // Light
 ThemeData light() {
-  return ThemeData.light().copyWith(
-    scaffoldBackgroundColor: lightColorScheme.surface,
+  return ThemeData(
+    useMaterial3: true,
     colorScheme: lightColorScheme,
     typography: Typography.material2021(colorScheme: lightColorScheme),
     appBarTheme: appBarTheme(lightColorScheme, false),
@@ -188,8 +213,8 @@ ThemeData light() {
 
 // Dark
 ThemeData dark() {
-  return ThemeData.dark().copyWith(
-    scaffoldBackgroundColor: darkColorScheme.surface,
+  return ThemeData(
+    useMaterial3: true,
     colorScheme: darkColorScheme,
     typography: Typography.material2021(colorScheme: darkColorScheme),
     appBarTheme: appBarTheme(darkColorScheme, true),
@@ -198,6 +223,7 @@ ThemeData dark() {
     // bottomAppBarTheme: bottomAppBarTheme(darkColorScheme),
     bottomNavigationBarTheme: bottomNavigationBarTheme(darkColorScheme),
     // tabBarTheme: tabBarTheme(darkColorScheme),
+    scaffoldBackgroundColor: darkColorScheme.background,
     floatingActionButtonTheme: floatingActionButtonTheme(darkColorScheme),
     buttonTheme: buttonThemeData(),
     bottomSheetTheme: bottomSheetThemeData(darkColorScheme),
