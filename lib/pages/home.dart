@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:minesweeper/controllers/google_ads_controller.dart';
 // Pages
 import '/pages/game_screen.dart';
 // Widgets
@@ -100,10 +101,14 @@ class _HomeState extends ConsumerState<Home> {
                     const SizedBox(height: 60),
                     buildCard("Resume", Icons.play_arrow, isPrimary: true),
                     GestureDetector(
-                      onTap: () => Navigator.push(
-                        context,
-                        createRoute(const GameScreen(), "game_screen"),
-                      ),
+                      onTap: () async {
+                        await ref.read(googleAdsProvider.notifier).showAd();
+
+                        Navigator.push(
+                          context,
+                          createRoute(const GameScreen(), "game_screen"),
+                        );
+                      },
                       child: buildCard("New Game", Icons.play_arrow),
                     ),
                     buildCard("Times", Icons.access_time),

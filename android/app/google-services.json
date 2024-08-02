@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "207654387874",
+    "project_id": "codesweeper-8345c",
+    "storage_bucket": "codesweeper-8345c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:207654387874:android:7c86523bfd842ac94097fb",
+        "android_client_info": {
+          "package_name": "com.codesweeper.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDD1lSV3btAvcKK32xu6bpQDTVexFxkhxo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
