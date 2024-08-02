@@ -25,6 +25,7 @@ class GoogleAdsController extends StateNotifier<GoogleAdsState> {
   GoogleAdsController({required this.ref, required this.storage})
       : super(
           GoogleAdsState(
+            // ca-app-pub-3940256099942544/1033173712
             adUnitId: FlutterConfig.get('AD_UNIT_ID'),
             interstitialAd: null,
           ),
