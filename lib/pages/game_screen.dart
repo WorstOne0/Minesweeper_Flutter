@@ -4,12 +4,16 @@ import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:flutter_neumorphic_plus/flutter_neumorphic.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // Controllers
+import '/controllers/google_ads_controller.dart';
 import '/controllers/game_state_controller.dart';
 // Models
 import '/models/board.dart';
 import '/models/cell.dart';
 // Widgets
 import '/widgets/minesweeper_cell.dart';
+// Utils
+import '/utils/context_extensions.dart';
+import '/utils/date_time_utils/my_duration_format.dart';
 
 // In the classic Minesweeper game, key elements include mines, numbers indicating how many mines are adjacent, and the grid itself. Here are some programming-related alternatives for these elements:
 
@@ -58,6 +62,8 @@ class _GameScreenState extends ConsumerState<GameScreen> {
 
   void createNewGame() async {
     await Future.delayed(const Duration(milliseconds: 50));
+
+    ref.read(gameProvider.notifier).stopTimer();
     ref.read(gameProvider.notifier).createNewGame(rows, columns, 20);
 
     alignGameBoard();
@@ -111,12 +117,14 @@ class _GameScreenState extends ConsumerState<GameScreen> {
   }
 
   Widget buildGameCell(int row, int column) {
+    Board board = ref.watch(gameProvider).board!;
     Cell cell = ref.read(gameProvider.notifier).getCell(row, column);
 
     return GestureDetector(
       onTap: () {
         if (!firstClick) {
           // focusOnPoint(row, column);
+          ref.read(gameProvider.notifier).startTimer();
 
           setState(() => firstClick = true);
         }
@@ -124,7 +132,37 @@ class _GameScreenState extends ConsumerState<GameScreen> {
         ref.read(gameProvider.notifier).handleClick(row, column);
       },
       onLongPress: () => ref.read(gameProvider.notifier).setFlag(row, column),
-      child: MinesweeperCell(cell: cell),
+      child: MinesweeperCell(cell: cell, isGameOver: board.isGameOver),
+    );
+  }
+
+  Widget buildCard(String title, IconData icon, {bool isPrimary = false}) {
+    return Card(
+      elevation: 1,
+      child: Container(
+        width: 250,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: isPrimary ? context.colorScheme.primary : null,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        padding: const EdgeInsets.symmetric(vertical: 15),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              size: 20,
+              color: isPrimary ? Colors.black : null,
+            ),
+            const SizedBox(width: 10),
+            Text(
+              title,
+              style: TextStyle(color: isPrimary ? Colors.black : null, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -133,14 +171,45 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     ref.watch(gameProvider);
 
     Board? board = ref.watch(gameProvider).board;
+    Duration time = ref.watch(gameProvider).time;
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        leadingWidth: 60,
+        title: time == Duration.zero
+            ? null
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.timer, size: 18),
+                  const SizedBox(width: 5),
+                  Text(
+                    MyDurationFormat.HOUR_MINUTE_SECOND.format(time),
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ],
+              ),
+        actions: [
+          SizedBox(
+            width: 60,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.bug_report, size: 18),
+                const SizedBox(width: 5),
+                Text(
+                  "${(board?.totalMines ?? 0) - (board?.flags ?? 0)}",
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            if (!isLoading) Text((board?.isGameLose ?? false) ? "Perdeu Otario" : "TO jogando"),
             isLoading
                 ? const CircularProgressIndicator()
                 : Expanded(
@@ -149,25 +218,71 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                         double width = constraints.maxHeight;
                         double height = constraints.maxHeight;
 
-                        return InteractiveViewer(
-                          maxScale: 4,
-                          minScale: 0.4,
-                          boundaryMargin: EdgeInsets.symmetric(
-                            vertical: height * 0.5,
-                            horizontal: width * 0.5,
-                          ),
-                          transformationController: transformationController,
-                          constrained: false,
-                          child: Container(
-                            color: Colors.black,
-                            child: LayoutGrid(
-                              columnSizes: List.generate(columns, (index) => 40.px),
-                              rowSizes: List.generate(rows, (index) => 40.px),
-                              columnGap: -0.2,
-                              rowGap: -0.2,
-                              children: buildGameBoard(),
+                        return Column(
+                          children: [
+                            Expanded(
+                              child: InteractiveViewer(
+                                maxScale: 4,
+                                minScale: 0.4,
+                                boundaryMargin: EdgeInsets.symmetric(
+                                  vertical: height * 0.5,
+                                  horizontal: width * 0.5,
+                                ),
+                                transformationController: transformationController,
+                                constrained: false,
+                                child: Container(
+                                  color: Colors.black,
+                                  child: LayoutGrid(
+                                    columnSizes: List.generate(columns, (index) => 40.px),
+                                    rowSizes: List.generate(rows, (index) => 40.px),
+                                    columnGap: -0.2,
+                                    rowGap: -0.2,
+                                    children: buildGameBoard(),
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
+                            const SizedBox(height: 10),
+                            if (board?.isGameOver ?? false)
+                              GestureDetector(
+                                onTap: () async {
+                                  await ref.read(googleAdsProvider.notifier).showAd();
+
+                                  setState(() {
+                                    isLoading = true;
+                                    firstClick = false;
+                                  });
+                                  createNewGame();
+                                },
+                                child: buildCard("New Game", Icons.play_arrow, isPrimary: true),
+                              ),
+                            if (board?.isGameWin ?? false)
+                              Column(
+                                children: [
+                                  Text(
+                                    "You Win!",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: context.colorScheme.primary,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () async {
+                                      await ref.read(googleAdsProvider.notifier).showAd();
+
+                                      setState(() {
+                                        isLoading = true;
+                                        firstClick = false;
+                                      });
+                                      createNewGame();
+                                    },
+                                    child: buildCard("New Game", Icons.play_arrow, isPrimary: true),
+                                  ),
+                                ],
+                              ),
+                            const SizedBox(height: 20),
+                          ],
                         );
                       },
                     ),

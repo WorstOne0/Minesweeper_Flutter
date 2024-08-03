@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic_plus/flutter_neumorphic.dart';
-import 'package:minesweeper/models/cell.dart';
+// Models
+import '/models/cell.dart';
 // Utils
 import '/utils/context_extensions.dart';
 
 class MinesweeperCell extends StatefulWidget {
-  const MinesweeperCell({required this.cell, super.key});
+  const MinesweeperCell({required this.cell, required this.isGameOver, super.key});
 
   final Cell cell;
+  final bool isGameOver;
 
   @override
   State<MinesweeperCell> createState() => _MinesweeperCellState();
@@ -85,19 +87,6 @@ class _MinesweeperCellState extends State<MinesweeperCell> {
                 : null,
           ),
 
-          if (widget.cell.cellState == CellState.revealed && widget.cell.isMine)
-            Align(
-              alignment: Alignment.center,
-              child: Padding(
-                padding: const EdgeInsets.all(1),
-                child: Container(
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(color: handleCellColor()),
-                  child: const Icon(Icons.bug_report, color: Colors.red, size: 20),
-                ),
-              ),
-            ),
-
           //
           Align(
             alignment: Alignment.center,
@@ -112,6 +101,20 @@ class _MinesweeperCellState extends State<MinesweeperCell> {
                   : null,
             ),
           ),
+
+          // Game Over
+          if (widget.isGameOver && widget.cell.isMine)
+            Align(
+              alignment: Alignment.center,
+              child: Padding(
+                padding: const EdgeInsets.all(1),
+                child: Container(
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(color: handleCellColor()),
+                  child: const Icon(Icons.bug_report, color: Colors.red, size: 24),
+                ),
+              ),
+            ),
         ],
       ),
     );

@@ -17,16 +17,20 @@ class Board {
   late int totalMines;
   late int flags;
 
+  late bool isFirstClick;
+
   late bool isGameWin;
-  late bool isGameLose;
+  late bool isGameOver;
 
   Board({required this.rowsCount, required this.columnsCount, required this.totalMines}) {
     createBoard(rowsCount, columnsCount, totalMines);
 
     flags = 0;
 
+    isFirstClick = true;
+
     isGameWin = false;
-    isGameLose = false;
+    isGameOver = false;
   }
 
   //
@@ -53,13 +57,21 @@ class Board {
 
       cells.add(rowCells);
     }
+  }
 
+  void placeMines(int rowClear, int columnClear) {
     // Place the mines
     for (int mine = 0; mine < totalMines; mine++) {
       int row = Random().nextInt(rowsCount);
       int column = Random().nextInt(columnsCount);
 
       Cell cell = cells[row][column];
+
+      if (row == rowClear && column == columnClear) {
+        mine--;
+        continue;
+      }
+
       if (!cell.isMine) {
         cell = cell.copyWith(isMine: true);
         changeCell(row, column, cell);
@@ -91,11 +103,46 @@ class Board {
     }
   }
 
+  bool checkWin() {
+    for (int row = 0; row < rowsCount; row++) {
+      for (int column = 0; column < columnsCount; column++) {
+        Cell cell = cells[row][column];
+
+        if (cell.isMine && cell.cellState == CellState.hidden) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
+  bool checkLose() {
+    for (int row = 0; row < rowsCount; row++) {
+      for (int column = 0; column < columnsCount; column++) {
+        Cell cell = cells[row][column];
+
+        if (cell.isMine && cell.cellState == CellState.revealed) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
   void handleClick(int row, int column) {
+    if (isFirstClick) {
+      placeMines(row, column);
+      isFirstClick = false;
+    }
+
     Cell cell = cells[row][column];
 
+    if (cell.cellState == CellState.flagged) return;
+
     if (cell.isMine) {
-      isGameLose = true;
+      isGameOver = true;
       return;
     }
 
@@ -138,9 +185,8 @@ class Board {
         break;
     }
 
-    // Check lose
-
-    // Check win
+    isGameOver = checkLose();
+    isGameWin = checkWin();
   }
 
   void revealCell(int row, int column) {
@@ -162,10 +208,22 @@ class Board {
         }
       }
     }
+
+    isGameOver = checkLose();
+    isGameWin = checkWin();
   }
 
   void setFlag(int row, int column) {
     Cell cell = cells[row][column].copyWith(cellState: CellState.flagged);
+    flags++;
+
+    changeCell(row, column, cell);
+    isGameWin = checkWin();
+  }
+
+  void removeFlag(int row, int column) {
+    Cell cell = cells[row][column].copyWith(cellState: CellState.hidden);
+    flags--;
 
     changeCell(row, column, cell);
   }

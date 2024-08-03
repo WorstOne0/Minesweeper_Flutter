@@ -1,4 +1,5 @@
 // Flutter Packages
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_config/flutter_config.dart';
@@ -78,6 +79,9 @@ class MyApp extends ConsumerWidget {
 
   final bool isDark;
 
+  static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+  static FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(analytics: analytics);
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ThemeProvider(
@@ -99,7 +103,9 @@ class MyApp extends ConsumerWidget {
         ),
         // Always start at Splash Screen
         home: const ResponsiveWidget(child: SplashScreen()),
-        // // Support PT-BR in dates
+        // Firebase Analytics
+        navigatorObservers: [observer],
+        // Support PT-BR in dates
         localizationsDelegates: const [
           ...GlobalMaterialLocalizations.delegates,
           GlobalWidgetsLocalizations.delegate

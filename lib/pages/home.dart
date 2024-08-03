@@ -1,13 +1,18 @@
+// ignore_for_file: use_build_context_synchronously
+
 // Flutter packages
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:minesweeper/controllers/google_ads_controller.dart';
+import 'package:url_launcher/url_launcher.dart';
+// Controllers
+import '/controllers/google_ads_controller.dart';
 // Pages
 import '/pages/game_screen.dart';
 // Widgets
 import '/widgets/responsive/create_route.dart';
+import '/widgets/my_snackbar.dart';
 // Utils
 import '/utils/context_extensions.dart';
 
@@ -22,6 +27,18 @@ class _HomeState extends ConsumerState<Home> {
   @override
   void initState() {
     super.initState();
+  }
+
+  void launchGithub() async {
+    bool success = await launchUrl(Uri.parse('https://flutter.dev'));
+
+    if (success) {
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(
+          mySnackBar(Colors.red, Icons.error, "Failed to launch URL"),
+        );
+    }
   }
 
   Widget buildCard(String title, IconData icon, {bool isPrimary = false}) {
@@ -99,7 +116,7 @@ class _HomeState extends ConsumerState<Home> {
                       ),
                     ),
                     const SizedBox(height: 60),
-                    buildCard("Resume", Icons.play_arrow, isPrimary: true),
+                    // buildCard("Resume", Icons.play_arrow, isPrimary: true),
                     GestureDetector(
                       onTap: () async {
                         await ref.read(googleAdsProvider.notifier).showAd();
@@ -111,8 +128,26 @@ class _HomeState extends ConsumerState<Home> {
                       },
                       child: buildCard("New Game", Icons.play_arrow),
                     ),
-                    buildCard("Times", Icons.access_time),
-                    buildCard("Store", Icons.store),
+                    GestureDetector(
+                      onTap: () {
+                        ScaffoldMessenger.of(context)
+                          ..hideCurrentSnackBar()
+                          ..showSnackBar(
+                            mySnackBar(Colors.red, Icons.error, "Coming Soon"),
+                          );
+                      },
+                      child: buildCard("Best Times", Icons.access_time),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        ScaffoldMessenger.of(context)
+                          ..hideCurrentSnackBar()
+                          ..showSnackBar(
+                            mySnackBar(Colors.red, Icons.error, "Coming Soon"),
+                          );
+                      },
+                      child: buildCard("Store", Icons.store),
+                    ),
                   ],
                 ),
               ),
@@ -124,9 +159,12 @@ class _HomeState extends ConsumerState<Home> {
                 alignment: Alignment.topRight,
                 child: Icon(Icons.settings),
               ),
-              const Align(
+              Align(
                 alignment: Alignment.bottomRight,
-                child: Icon(FontAwesomeIcons.github),
+                child: IconButton(
+                  onPressed: launchGithub,
+                  icon: const Icon(FontAwesomeIcons.github),
+                ),
               ),
             ],
           ),
