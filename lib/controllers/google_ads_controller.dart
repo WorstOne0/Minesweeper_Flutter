@@ -1,6 +1,5 @@
 // Flutter Packages
 import 'package:flutter/material.dart';
-import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 // Services
@@ -24,9 +23,9 @@ class GoogleAdsState {
 class GoogleAdsController extends StateNotifier<GoogleAdsState> {
   GoogleAdsController({required this.ref, required this.storage})
       : super(
-          GoogleAdsState(
-            // ca-app-pub-3940256099942544/1033173712
-            adUnitId: FlutterConfig.get('AD_UNIT_ID'),
+          const GoogleAdsState(
+            adUnitId: "ca-app-pub-3940256099942544/1033173712", // Debug
+            // adUnitId: "ca-app-pub-8266409518147572/2414888963", // Real
             interstitialAd: null,
           ),
         );

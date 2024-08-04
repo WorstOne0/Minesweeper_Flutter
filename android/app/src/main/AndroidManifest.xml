@@ -1,13 +1,18 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.codesweeper.app" xmlns:tools="http://schemas.android.com/tools">
     <application
-        android:label="minesweeper"
+        android:label="CodeSweeper"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
 
         <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
-        <meta-data
+        <!-- <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-3940256099942544~3347511713"
+        /> -->
+        <!-- Real One -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-8266409518147572~5865643840"
         />
 
         <activity
