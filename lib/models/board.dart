@@ -67,7 +67,9 @@ class Board {
 
       Cell cell = cells[row][column];
 
-      if (row == rowClear && column == columnClear) {
+      // Check if the current cell is within the cleared square
+      if ((row >= rowClear - 1 && row <= rowClear + 1) &&
+          (column >= columnClear - 1 && column <= columnClear + 1)) {
         mine--;
         continue;
       }

@@ -1,10 +1,13 @@
 // ignore_for_file: use_build_context_synchronously
 
 // Flutter packages
+import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:minesweeper/services/storage/secure_storage.dart';
+import 'package:minesweeper/styles/style_config.dart';
 import 'package:url_launcher/url_launcher.dart';
 // Controllers
 import '/controllers/google_ads_controller.dart';
@@ -73,100 +76,123 @@ class _HomeState extends ConsumerState<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Container(
-          alignment: Alignment.center,
-          padding: const EdgeInsets.all(30),
-          child: Stack(
-            children: [
-              Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Hero(
-                      tag: "logo",
-                      flightShuttleBuilder: (
-                        flightContext,
-                        animation,
-                        flightDirection,
-                        fromHeroContext,
-                        toHeroContext,
-                      ) {
-                        return Material(color: Colors.transparent, child: toHeroContext.widget);
-                      },
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.bug_report,
-                            size: 120,
-                            color: context.colorScheme.primary,
-                          ),
-                          const SizedBox(height: 5),
-                          Text(
-                            "</> CodeSweeper",
-                            style: TextStyle(
-                              fontFamily: GoogleFonts.firaCode().fontFamily,
-                              fontSize: 24,
+    return ThemeSwitchingArea(
+      child: Scaffold(
+        body: SafeArea(
+          child: Container(
+            alignment: Alignment.center,
+            padding: const EdgeInsets.all(30),
+            child: Stack(
+              children: [
+                Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Hero(
+                        tag: "logo",
+                        flightShuttleBuilder: (
+                          flightContext,
+                          animation,
+                          flightDirection,
+                          fromHeroContext,
+                          toHeroContext,
+                        ) {
+                          return Material(color: Colors.transparent, child: toHeroContext.widget);
+                        },
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.bug_report,
+                              size: 120,
+                              color: context.colorScheme.primary,
                             ),
-                          )
-                        ],
+                            const SizedBox(height: 5),
+                            Text(
+                              "</> CodeSweeper",
+                              style: TextStyle(
+                                fontFamily: GoogleFonts.firaCode().fontFamily,
+                                fontSize: 24,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 60),
-                    // buildCard("Resume", Icons.play_arrow, isPrimary: true),
-                    GestureDetector(
-                      onTap: () async {
-                        await ref.read(googleAdsProvider.notifier).showAd();
+                      const SizedBox(height: 60),
+                      // buildCard("Resume", Icons.play_arrow, isPrimary: true),
+                      GestureDetector(
+                        onTap: () async {
+                          await ref.read(googleAdsProvider.notifier).showAd();
 
-                        Navigator.push(
-                          context,
-                          createRoute(const GameScreen(), "game_screen"),
+                          Navigator.push(
+                            context,
+                            createRoute(const GameScreen(), "game_screen"),
+                          );
+                        },
+                        child: buildCard("New Game", Icons.play_arrow),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          ScaffoldMessenger.of(context)
+                            ..hideCurrentSnackBar()
+                            ..showSnackBar(
+                              mySnackBar(Colors.red, Icons.error, "Coming Soon"),
+                            );
+                        },
+                        child: buildCard("Best Times", Icons.access_time),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          ScaffoldMessenger.of(context)
+                            ..hideCurrentSnackBar()
+                            ..showSnackBar(
+                              mySnackBar(Colors.red, Icons.error, "Coming Soon"),
+                            );
+                        },
+                        child: buildCard("Store", Icons.store),
+                      ),
+                    ],
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: ThemeSwitcher.withTheme(
+                    builder: (p0, switcher, theme) => IconButton(
+                      onPressed: () {
+                        ref.read(secureStorageProvider).saveString(
+                              "dark_mode",
+                              (theme.brightness == Brightness.light).toString(),
+                            );
+
+                        switcher.changeTheme(
+                          theme: theme.brightness == Brightness.light ? dark() : light(),
                         );
                       },
-                      child: buildCard("New Game", Icons.play_arrow),
+                      icon: CircleAvatar(
+                        backgroundColor: Colors.transparent,
+                        child: Icon(
+                          theme.brightness == Brightness.light ? Icons.dark_mode : Icons.light_mode,
+                          size: 30,
+                          color: Colors.grey,
+                        ),
+                      ),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        ScaffoldMessenger.of(context)
-                          ..hideCurrentSnackBar()
-                          ..showSnackBar(
-                            mySnackBar(Colors.red, Icons.error, "Coming Soon"),
-                          );
-                      },
-                      child: buildCard("Best Times", Icons.access_time),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        ScaffoldMessenger.of(context)
-                          ..hideCurrentSnackBar()
-                          ..showSnackBar(
-                            mySnackBar(Colors.red, Icons.error, "Coming Soon"),
-                          );
-                      },
-                      child: buildCard("Store", Icons.store),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-              const Align(
-                alignment: Alignment.topLeft,
-                child: Icon(Icons.light_mode),
-              ),
-              const Align(
-                alignment: Alignment.topRight,
-                child: Icon(Icons.settings),
-              ),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: IconButton(
-                  onPressed: launchGithub,
-                  icon: const Icon(FontAwesomeIcons.github),
+                const Align(
+                  alignment: Alignment.topRight,
+                  child: Icon(Icons.settings),
                 ),
-              ),
-            ],
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: IconButton(
+                    onPressed: launchGithub,
+                    icon: const Icon(FontAwesomeIcons.github),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

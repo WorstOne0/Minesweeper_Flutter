@@ -223,7 +223,7 @@ ThemeData dark() {
     // bottomAppBarTheme: bottomAppBarTheme(darkColorScheme),
     bottomNavigationBarTheme: bottomNavigationBarTheme(darkColorScheme),
     // tabBarTheme: tabBarTheme(darkColorScheme),
-    scaffoldBackgroundColor: darkColorScheme.background,
+    scaffoldBackgroundColor: darkColorScheme.surface,
     floatingActionButtonTheme: floatingActionButtonTheme(darkColorScheme),
     buttonTheme: buttonThemeData(),
     bottomSheetTheme: bottomSheetThemeData(darkColorScheme),

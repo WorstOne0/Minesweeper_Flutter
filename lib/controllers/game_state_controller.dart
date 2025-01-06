@@ -3,6 +3,7 @@ import 'dart:async';
 // Flutter Packages
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:minesweeper/utils/int_utils/int_utils.dart';
 // Models
 import '/models/board.dart';
 import '/models/cell.dart';
@@ -33,10 +34,16 @@ class GameProviderController extends StateNotifier<GameStateState> {
 
   Timer? timer;
 
-  void createNewGame(int rowsCount, int columnsCount, int totalMines) {
+  void createNewGame(int rowsCount, int columnsCount, int totalMines) async {
     state = state.copyWith(
       board: Board(rowsCount: rowsCount, columnsCount: columnsCount, totalMines: totalMines),
+      time: Duration.zero,
     );
+
+    final adWatchdogStr = await storage.readString("adWatchdog");
+    int adWatchdog = betterParseInt(adWatchdogStr);
+
+    storage.saveString("adWatchdog", "${adWatchdog + 1}");
   }
 
   Cell getCell(int row, int column) => state.board!.getCell(row, column);
@@ -67,22 +74,19 @@ class GameProviderController extends StateNotifier<GameStateState> {
     }
   }
 
-  void startTimer() => timer = Timer.periodic(
-        const Duration(seconds: 1),
-        (timer) {
-          if (!state.board!.isGameWin) stopTimer();
+  void startTimer() {
+    timer = Timer.periodic(
+      const Duration(seconds: 1),
+      (timer) {
+        if (state.board!.isGameWin || state.board!.isGameOver) stopTimer();
 
-          if (!state.board!.isGameOver) {
-            state = state.copyWith(time: state.time + const Duration(seconds: 1));
-          } else {
-            stopTimer();
-          }
-        },
-      );
+        state = state.copyWith(time: state.time + const Duration(seconds: 1));
+      },
+    );
+  }
 
   void stopTimer() {
     timer?.cancel();
-    state = state.copyWith(time: Duration.zero);
   }
 }
 

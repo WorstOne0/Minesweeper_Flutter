@@ -4,6 +4,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 // Services
 import '/services/storage/secure_storage.dart';
+// Utils
+import '/utils/int_utils/int_utils.dart';
+
+enum Enviroment { prod, desenv, local }
+
+String adUnitIdOnEnviroment(Enviroment enviroment) {
+  return switch (enviroment) {
+    Enviroment.prod => "ca-app-pub-8266409518147572/2414888963",
+    Enviroment.desenv => "ca-app-pub-3940256099942544/1033173712",
+    Enviroment.local => "ca-app-pub-3940256099942544/1033173712",
+  };
+}
 
 @immutable
 class GoogleAdsState {
@@ -23,9 +35,8 @@ class GoogleAdsState {
 class GoogleAdsController extends StateNotifier<GoogleAdsState> {
   GoogleAdsController({required this.ref, required this.storage})
       : super(
-          const GoogleAdsState(
-            adUnitId: "ca-app-pub-3940256099942544/1033173712", // Debug
-            // adUnitId: "ca-app-pub-8266409518147572/2414888963", // Real
+          GoogleAdsState(
+            adUnitId: adUnitIdOnEnviroment(Enviroment.prod),
             interstitialAd: null,
           ),
         );
@@ -73,8 +84,15 @@ class GoogleAdsController extends StateNotifier<GoogleAdsState> {
   }
 
   Future<void> showAd() async {
+    final adWatchdogStr = await storage.readString("adWatchdog");
+    int adWatchdog = betterParseInt(adWatchdogStr);
+
+    if (adWatchdog < 3) return;
+
     await loadAd();
     if (state.interstitialAd != null) await state.interstitialAd!.show();
+
+    await storage.saveString("adWatchdog", "0");
   }
 }
 

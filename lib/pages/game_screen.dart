@@ -71,6 +71,17 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     setState(() => isLoading = false);
   }
 
+  void restartGame() async {
+    await ref.read(googleAdsProvider.notifier).showAd();
+
+    setState(() {
+      isLoading = true;
+      firstClick = false;
+    });
+
+    createNewGame();
+  }
+
   void alignGameBoard() {
     Matrix4 matrix = Matrix4.identity();
 
@@ -116,21 +127,26 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     return gameBoard;
   }
 
+  void handleCellClick(int row, int column) {
+    if (!firstClick) {
+      // focusOnPoint(row, column);
+      ref.read(gameProvider.notifier).startTimer();
+      setState(() => firstClick = true);
+    }
+
+    final board = ref.read(gameProvider).board!;
+
+    if (board.isGameOver || board.isGameWin) return;
+
+    ref.read(gameProvider.notifier).handleClick(row, column);
+  }
+
   Widget buildGameCell(int row, int column) {
     Board board = ref.watch(gameProvider).board!;
     Cell cell = ref.read(gameProvider.notifier).getCell(row, column);
 
     return GestureDetector(
-      onTap: () {
-        if (!firstClick) {
-          // focusOnPoint(row, column);
-          ref.read(gameProvider.notifier).startTimer();
-
-          setState(() => firstClick = true);
-        }
-
-        ref.read(gameProvider.notifier).handleClick(row, column);
-      },
+      onTap: () => handleCellClick(row, column),
       onLongPress: () => ref.read(gameProvider.notifier).setFlag(row, column),
       child: MinesweeperCell(cell: cell, isGameOver: board.isGameOver),
     );
@@ -245,15 +261,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                             const SizedBox(height: 10),
                             if (board?.isGameOver ?? false)
                               GestureDetector(
-                                onTap: () async {
-                                  await ref.read(googleAdsProvider.notifier).showAd();
-
-                                  setState(() {
-                                    isLoading = true;
-                                    firstClick = false;
-                                  });
-                                  createNewGame();
-                                },
+                                onTap: restartGame,
                                 child: buildCard("New Game", Icons.play_arrow, isPrimary: true),
                               ),
                             if (board?.isGameWin ?? false)
